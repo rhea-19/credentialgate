@@ -1,0 +1,18 @@
+<section class="evidence-panel" aria-labelledby="evidence-heading">
+  <div class="evidence-top"><div><span class="evidence-eyebrow">REPORT PROVENANCE · MCP</span>
+    <h3 id="evidence-heading">Know what stands behind your report.</h3></div>
+    <span class="evidence-badge" id="evidence-badge">Not checked</span></div>
+  <p class="evidence-intro">Check whether these exact PDF bytes have a registered, signed provider association, and whether its credential is currently active.</p>
+  <button type="button" id="check-evidence">Check report evidence <span aria-hidden="true">↗</span></button>
+  <p id="evidence-message" aria-live="polite">Only the report’s SHA-256 fingerprint is sent to the credential service.</p>
+  <div id="evidence-result" hidden>
+    <div id="evidence-provider" class="evidence-provider"></div>
+    <dl id="evidence-checks" class="evidence-checks"></dl>
+    <p class="evidence-reference" id="evidence-request"></p>
+  </div>
+  <details class="evidence-details"><summary>How this check works</summary>
+    <ol><li>Report Genie fingerprints the original PDF bytes.</li><li>The MCP tool requests verification from the credential service.</li><li>The service checks the signed association, caller permissions and credential status.</li><li>An audit event is committed before the result is returned.</li></ol>
+    <p class="evidence-digest">Report fingerprint: <code>{{ report_digest }}</code></p>
+  </details>
+  <p class="evidence-limit">This checks a registered association. It does not establish provider authorship, license validity or medical accuracy. An unregistered report is not automatically fraudulent.</p>
+</section>

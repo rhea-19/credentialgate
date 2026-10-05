@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Report Genie · Evidence walkthrough</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='walkthrough.css') }}">
+  <script src="{{ url_for('static', filename='walkthrough.js') }}" defer></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/">Report Genie<span>Evidence walkthrough</span></a><nav aria-label="Main"><a href="#about-demo">About this demo</a><a href="/">Open report upload ↗</a></nav></header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> WORKING DEMO · SYNTHETIC DATA</p>
+      <h1>What can we confirm<br>about this report?</h1>
+      <p class="lead">An AI explanation is only part of the picture. This check looks for a recorded connection between a report and a provider’s credential.</p>
+      <ol class="steps" aria-label="Walkthrough steps"><li><span>01</span> Choose an example</li><li><span>02</span> Check its evidence</li><li><span>03</span> Understand the result</li></ol>
+    </section>
+
+    <div class="workbench">
+      <aside class="examples" aria-labelledby="examples-title">
+        <p class="eyebrow">TRY IT YOURSELF</p><h2 id="examples-title">One report. <br>Two different copies.</h2>
+        <p class="aside-copy">Start with the original. Then try a copy whose text has been changed.</p>
+        {% for kind, title, subtitle in [('registered', 'Original sample', 'A signed provider connection was registered for this exact file.'), ('changed', 'Changed copy', 'A small text edit creates different file bytes. Its connection must be checked again.')] %}
+        <form action="/demo" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="scenario" value="{{ kind }}"><input type="hidden" name="view" value="walkthrough">
+          <button class="scenario {% if scenario == kind %}selected{% endif %}" type="submit" aria-pressed="{{ 'true' if scenario == kind else 'false' }}">
+            <span class="scenario-number">{{ '01' if kind == 'registered' else '02' }}</span><span><strong>{{ title }}</strong><small>{{ subtitle }}</small></span><span aria-hidden="true">↗</span>
+          </button>
+        </form>
+        {% endfor %}
+        <div class="aside-note"><strong>A useful distinction</strong><p>“No matching record” means we cannot confirm the connection. It does not mean the report is fraudulent.</p></div>
+      </aside>
+
+      <section class="check-card" aria-labelledby="check-title">
+        <div class="card-top"><span class="eyebrow">REPORT EVIDENCE</span><span id="walk-status" class="status">{{ 'Ready to check' if scenario else 'Choose an example' }}</span></div>
+        <div class="paper-row"><div class="paper-icon" aria-hidden="true"><span></span><span></span><span></span></div><div><h2 id="check-title">{{ 'Original sample report' if scenario == 'registered' else 'Changed sample report' if scenario == 'changed' else 'Your demonstration report' }}</h2><p>A synthetic PDF · No patient information</p></div></div>
+        {% if scenario %}
+        <p class="check-intro">{{ 'This is the exact file used when the demo provider connection was registered.' if scenario == 'registered' else 'The phrase “software testing only” was changed to “software testing ONLY.” We check the whole file, even for a small edit.' }}</p>
+        <div class="actions"><button id="run-walkthrough" class="primary" type="button">Check this report <span aria-hidden="true">→</span></button><a href="/demo-report.pdf?scenario={{ scenario }}">Download this example</a></div>
+        {% else %}<p class="check-intro empty-state">Choose <strong>Original sample</strong> on the left to begin. You don’t need to upload a file or create an account.</p>{% endif %}
+        <div id="walk-result" class="outcome" hidden>
+          <p class="eyebrow">WHAT WE FOUND</p><h3 id="walk-heading"></h3><p id="walk-explanation"></p>
+          <div id="walk-provider" class="provider" hidden></div>
+          <p id="walk-meaning" class="meaning"></p>
+        </div>
+        <p id="walk-progress" class="progress" role="status" aria-live="polite">{{ 'The result will come from the running verification service.' if scenario else 'Both examples run the same verification process.' }}</p>
+        <details class="technical" id="technical-details"><summary>See the evidence behind the result</summary>
+          <p>The same check runs through MCP, the interface connecting Report Genie to its separate credential service.</p>
+          <dl id="walk-checks"></dl><p id="walk-reference" class="mono"></p>
+          {% if report_digest %}<p class="mono">File fingerprint (SHA-256): {{ report_digest }}</p>{% endif %}
+          <p>Access rules, signature checks and an audit record are handled by the service. The website does not read its credential database.</p>
+        </details>
+        <p class="scope">This verifies a registered connection, not medical accuracy, a current professional license, or who actually authored the report.</p>
+      </section>
+    </div>
+
+    <section class="about" id="about-demo" aria-labelledby="about-title">
+      <div><p class="eyebrow">THE IDEA IN PLAIN LANGUAGE</p><h2 id="about-title">Make the evidence visible.</h2><p>Report Genie explains reports. This addition helps a viewer distinguish a confirmed record from a connection that has not been established.</p></div>
+      <div class="about-item"><span>01</span><h3>Check the exact file</h3><p>A digital fingerprint identifies the file’s bytes. A changed file needs its own evidence.</p></div>
+      <div class="about-item"><span>02</span><h3>Check the recorded connection</h3><p>A digital signature protects the registered association. The service also checks the linked credential’s status.</p></div>
+      <div class="about-item"><span>03</span><h3>Keep a traceable result</h3><p>Each completed check has a reference to its audit event. If the event cannot be saved, success is not returned.</p></div>
+    </section>
+    <footer><p><strong>What is real:</strong> the file checks, MCP calls, digital signatures and audit records.<br><strong>What is illustrative:</strong> the provider and reports. This walkthrough does not generate an AI medical interpretation.</p><span>Report Genie · Independent prototype</span></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Report Genie - Summary</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='summary-styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='evidence.css') }}">
+</head>
+
+<body>
+  <div class="overlay">
+    <nav>
+      <div class="nav-left">
+        <h1>Report Genie</h1>
+        <p>Your health report. Explained.</p>
+      </div>
+      <div class="nav-right">
+        <a href="#">Login</a>
+        <a href="#">Sign Up</a>
+      </div>
+    </nav>
+
+    <div class="disclaimer-box">
+      ⚠️ <strong>Disclaimer:</strong> This application is for educational and informational purposes only. It does not provide medical advice, diagnosis, or treatment. Do not upload real patient data. Sample reports used are synthetic or from publicly available, de-identified datasets. Always consult a licensed healthcare provider for medical concerns.
+    </div>
+
+    <div class="summary-box">
+      <h2>Report Summary</h2>
+      {% if demo_mode %}<p class="demo-label">Synthetic demo · No AI interpretation is generated</p>{% endif %}
+      {% include 'evidence.html' %}
+      <ul>
+        {% for test in summary.tokens %}
+          <li>
+            <strong>{{ test.name }}:</strong> {{ test.value }}
+            <div class="description">{{ test.description }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <p><strong>You also said: </strong> {{ summary.notes or "No additional notes provided." }}</p>
+
+      <form id="ask-form">
+        <label for="question">Ask a question about your report:</label>
+        <input type="text" id="question" name="question" placeholder="Enter your question..." required />
+        <button type="submit">Ask</button>
+      </form>
+
+      <div id="answer-box" style="margin-top: 20px; display: none;">
+        <strong>Answer:</strong>
+        <p id="answer-text"></p>
+      </div>
+
+      <script src="{{ url_for('static', filename='summary.js') }}" defer></script>
+      <script src="{{ url_for('static', filename='evidence.js') }}" defer></script>
+
+      <div class="upload-again">
+        <a href="/">← Upload Another Report</a>
+      </div>
+    </div>
+
+    <footer>
+      <p>We simplify complex medical reports using AI-powered information retrieval and summarization.
+        Built for patients, by students passionate about healthcare accessibility.</p>
+
+      <a href="https://www.youtube.com/watch?v=pxAyKX8FHzs">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube Icon" class="youtube-icon">
+            Watch our demo video
+      </a>
+    </footer>
+  </div>
+
+</body>
+</html>

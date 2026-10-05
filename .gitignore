@@ -1,0 +1,26 @@
+.venv/
+var/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.env
+dist/
+build/
+.DS_Store
+
+
+# Local credentials and generated data
+.env.*
+!.env.example
+*.db
+*.db-*
+*.pem
+*.key
+
+.venv*/
+demo-recordings/
+extracted.json
+model_logs.txt
+models/

@@ -1,0 +1,35 @@
+.evidence-panel { margin: 1.5rem 0 2rem; padding: 1.5rem; border: 1px solid #cedeea; border-radius: 14px; background: linear-gradient(135deg, #f4f9fd, #fff); color: #20394f; }
+.evidence-top { display: flex; gap: 1rem; justify-content: space-between; align-items: flex-start; }
+.evidence-eyebrow { font-size: .68rem; letter-spacing: .12em; font-weight: 600; color: #426b86; }
+.evidence-panel h3 { font-size: 1.25rem; line-height: 1.35; margin: .45rem 0 .75rem; color: #123c5d; }
+.evidence-badge { flex-shrink: 0; padding: .35rem .65rem; background: #e4edf3; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+.evidence-badge[data-state="verified"] { background: #d9eee5; color: #205740; }
+.evidence-badge[data-state="invalid_binding"], .evidence-badge[data-state="credential_unavailable"] { background: #fce8db; color: #75411c; }
+.evidence-intro, #evidence-message { font-size: .9rem; line-height: 1.6; }
+.evidence-panel button { margin: .3rem 0; font-size: .85rem; width: auto; }
+.evidence-panel button:disabled { opacity: .6; cursor: wait; }
+.evidence-provider { padding: 1rem 0 .5rem; font-size: .9rem; font-weight: 600; }
+.evidence-checks { margin: .5rem 0; }
+.evidence-checks div { display: flex; justify-content: space-between; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid #e1eaf0; font-size: .85rem; }
+.evidence-checks dd { margin: 0; text-align: right; font-weight: 600; }
+.evidence-reference { font: .7rem/1.6 monospace; overflow-wrap: anywhere; color: #536b7c; }
+.evidence-details { margin-top: 1rem; font-size: .8rem; line-height: 1.6; }
+.evidence-details summary { cursor: pointer; font-weight: 600; }
+.evidence-details ol { padding-left: 1.3rem; }
+.evidence-digest { overflow-wrap: anywhere; }
+.evidence-limit { margin: 1rem 0 0; padding-top: .85rem; border-top: 1px solid #dce6ed; font-size: .75rem; color: #536575; line-height: 1.6; }
+.demo-note { background: #f0f6fc; border: 1px solid #d6e4f0; padding: 1.2rem; border-radius: 12px; margin: 1rem 0 2rem; line-height: 1.5; }
+.demo-note p { font-size: .9rem; }
+.demo-note button { margin: .2rem 0 1rem; }
+.demo-note a { font-size: .85rem; color: #005fa3; }
+.demo-label { font-size: .8rem; color: #466379; }
+:focus-visible { outline: 3px solid #538bb9; outline-offset: 4px; }
+@media (max-width: 600px) {
+  .summary-box, .upload-box { margin: 1.25rem .75rem; padding: 1.2rem; }
+  .evidence-panel { padding: 1rem; }
+  .evidence-top { flex-direction: column; gap: .25rem; }
+  nav { padding: 1rem; gap: .5rem; }
+  .nav-right a { margin-left: .5rem; font-size: .85rem; }
+  .row { flex-direction: column; }
+  input, textarea, select { max-width: 100%; box-sizing: border-box; }
+}

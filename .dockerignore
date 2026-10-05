@@ -1,0 +1,14 @@
+.git
+.venv
+var
+.env
+**/__pycache__
+**/*.egg-info
+.pytest_cache
+.ruff_cache
+
+**/var
+**/.venv*
+**/demo-recordings
+.env.*
+integrations

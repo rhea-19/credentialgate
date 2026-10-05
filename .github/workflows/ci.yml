@@ -1,0 +1,30 @@
+name: CredentialGate checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - run: python -m pip install -c requirements.lock -e '.[dev,web]'
+      - run: python -m pytest -q
+      - run: python -m pytest -q tests
+        working-directory: integrations/report-genie
+      - run: ruff check .
+      - run: ruff format --check .
+  containers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --target api -t credentialgate-api .
+      - run: docker build --target mcp -t credentialgate-mcp .
+      - name: Confirm adapter image excludes service modules
+        run: >-
+          docker run --rm credentialgate-mcp python -c
+          "import importlib.util; assert importlib.util.find_spec('credentialgate.service') is None; assert importlib.util.find_spec('credentialgate.storage') is None"
